@@ -1,0 +1,41 @@
+module ALU_tb;
+
+    // Input and Output declarations
+    reg [3:0] A;
+    reg [3:0] B;
+    reg [2:0] OpCode;
+    wire [7:0] Result;
+    wire Zero;
+    wire Carry;
+
+    // Instantiate the ALU module (Unit Under Test, UUT)
+    ALU uut (
+        .A(A),
+        .B(B),
+        .OpCode(OpCode),
+        .Result(Result),
+        .Zero(Zero),
+        .Carry(Carry)
+    );
+
+    // Simulation logic
+    initial begin
+               
+        // Display format for the simulation console
+        $monitor("Time: %0t | A: %b, B: %b, OpCode: %b | Result: %b, Zero: %b, Carry: %b", $time, A, B, OpCode, Result, Zero, Carry);
+        
+        // Test cases
+        A = 4'b0011; B = 4'b0101; OpCode = 3'b000; #10; // Add
+        A = 4'b1010; B = 4'b0100; OpCode = 3'b001; #10; // Subtract
+        A = 4'b0011; B = 4'b0010; OpCode = 3'b010; #10; // Multiply
+        A = 4'b1000; B = 4'b0010; OpCode = 3'b011; #10; // Divide
+        A = 4'b0011; B = 4'b0100; OpCode = 3'b100; #10; // A < B
+        A = 4'b0101; B = 4'b0011; OpCode = 3'b101; #10; // A > B
+        A = 4'b0000; B = 4'b0000; OpCode = 3'b000; #10; // Add with Zero result
+        A = 4'b1111; B = 4'b0001; OpCode = 3'b000; #10; // Add with Carry
+
+        // End simulation
+        $finish;
+    end
+
+endmodule
